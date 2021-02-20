@@ -1,0 +1,6 @@
+*
+!.gitignore
+!m3u8_ui.py
+!m3u8_downloader.py
+!main.py
+!m3u8_downloader.ui
