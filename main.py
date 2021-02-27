@@ -78,11 +78,16 @@ def init_downloader():
     #m3u8_Downloader.workDirPath = "Z:/"
     m3u8_downloader.m3u8IndexFile = "Z:/index.m3u8"
     url = ui.m3u8_url.text()
-    title = ui.save_file.text()
-    if len(title) < 4:
-        title = '电影_' + url.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.mp4'
+    save_path = ui.save_file.text()
+    if save_path.find('.') < 1:
+        save_path += '.mp4'
+    if save_path.find(':/') < 0:
+        if len(save_path) <= 4:
+            save_path = '电影_' + url.rsplit('.', 1)[0].rsplit('/', 1)[1] + '.mp4'
+        save_path = sys.argv[0][0:sys.argv[0].rindex('/')+1] + save_path     #"z:/"
     m3u8_downloader.m3u8Url = url
-    m3u8_downloader.title = title
+    m3u8_downloader.saveFile = save_path
+    m3u8_downloader.cachePath = save_path[0:save_path.rindex('/')+1] + "cache"
     proxy = {'http': 'http://' + ui.proxy.text(), 'https': 'https://' + ui.proxy.text()}
     m3u8_downloader.proxy = proxy
     m3u8_downloader.UseProxy = ui.cbProxy.isChecked()
@@ -92,7 +97,7 @@ def init_downloader():
 def InitMainWindow():
     global listViewMode
     ui.m3u8_url.setText("https://bilibili.xiang-kuyun.com/20210214/11576_c9f0a0ea/index.m3u8?sign=3e7bf3669d4d88a86e5c57d7e3d67387")
-    ui.save_file.setText('碰撞地球')
+    ui.save_file.setText('Z:/碰撞地球')
     listViewMode = QStandardItemModel(0, 3)
     listViewMode.setHorizontalHeaderLabels([' # ', '视频流地址', '状态'])
     #for row in range(3):

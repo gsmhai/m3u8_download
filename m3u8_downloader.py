@@ -13,7 +13,8 @@ from Crypto.Cipher import AES
 ########################################## Extern input variable ######################################################
 # 主程序下载的m3u8 url
 m3u8Url = 'https://dalao.wahaha-kuyun.com/20201209/4679_4c0f5c63/1000k/hls/index.m3u8'
-title = '碰撞地球'
+saveFile = 'Z:/碰撞地球.mp4'
+cachePath = "Z:/cache"
 proxy = {'http': 'http://10.217.10.40:80', 'https': 'https://10.217.10.40:80'}
 UseProxy = False
 breakSignal = None
@@ -33,8 +34,7 @@ headers = {
 # 文件格式: 视频名称,m3u8地址
 # eg: 鬼吹灯之龙岭迷窟,https://v5.szjal.cn/20200904/pqq5L2pb/index.m3u8
 m3u8IndexFile = "Z:/index.m3u8"
-workDirPath = "Z:/"
-cachePath = workDirPath + "cache"
+
 
 taskThreadPool = None
 threadPoolCount = 50
@@ -200,7 +200,7 @@ def ffmpegToMp4(inputFilePath, ouputFilePath):
 
 
 def VideoDownloader():
-    global title
+    global saveFile
     global m3u8Url
     global cachePath
     global HostUrl
@@ -252,7 +252,7 @@ def VideoDownloader():
         PrintInfo("ts合并失败！")
         return False
     PrintInfo("开始mp4转换...")
-    if not ffmpegToMp4(cachePath + "/cache.flv", workDirPath + title + ".mp4"):
+    if not ffmpegToMp4(cachePath + "/cache.flv",  saveFile):
         return False
     return True
 
@@ -331,9 +331,9 @@ if __name__ == '__main__':
                 break
             m3u8_info = line.split(',')
             if len(m3u8_info) > 1:
-                title = m3u8_info[0]
+                saveFile = 'Z:/' + m3u8_info[0]+'.mp4'
                 m3u8Url = m3u8_info[1]
             else:
-                title = '电影_' + m3u8_info[0].rsplit('.', 1)[0].rsplit('/', 1)[1]+'.mp4'
+                saveFile = 'Z:/' + '电影_' + m3u8_info[0].rsplit('.', 1)[0].rsplit('/', 1)[1]+'.mp4'
                 m3u8Url = m3u8_info[0]
             Download()
